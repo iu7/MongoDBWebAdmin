@@ -9,24 +9,17 @@ mongo_client = MongoClient('localhost', 27017)
 
 @flask_server.route('/')
 def root():
-    return '''
-	<form name="test" method="post" action="/execute">
-	  <p>Database:<input type="text" name="database"></p>
-	  <p>Query:<br>
-	  <textarea name="query" cols="80" rows="25"></textarea><br>
-	  <input type="submit" value="Execute!"></p>
-	</form>
-    '''
+    return render_template('root.html',
+        database_name_field = 'database_name',
+        query_text_field = 'query_text',
+        action_url = url_for('query_result'))
 
-@flask_server.route('/execute', methods = ['POST'])
-def foo():
-    database = request.form['database']
-    query = request.form['query']
-    result = mongo_client[database].eval(query)
-    return '''
-      <p>Result:<br>
-      <textarea name="result" cols="80" rows="25">{0}</textarea><p>
-    '''.format(result)
+@flask_server.route('/query_result', methods = ['POST'])
+def query_result():
+    database_name = request.form['database_name']
+    query_text = request.form['query_text']
+    result = mongo_client[database_name].eval(query_text)
+    return render_template('query_result.html', result_text = result)
 
 if __name__ == '__main__':
     flask_server.run(debug = True)
