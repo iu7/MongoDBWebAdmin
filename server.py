@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import *
 from pymongo import *
+from flask import *
 
 flask_server = Flask(__name__)
 mongo_client = MongoClient('localhost', 27017)
@@ -10,9 +10,8 @@ mongo_client = MongoClient('localhost', 27017)
 @flask_server.route('/')
 def root():
     return render_template('root.html',
-        database_name_field = 'database_name',
-        query_text_field = 'query_text',
-        action_url = url_for('query_result'))
+                           database_names = mongo_client.database_names(),
+                           submit_target = url_for('query_result'))
 
 @flask_server.route('/query_result', methods = ['POST'])
 def query_result():
