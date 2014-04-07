@@ -1,0 +1,37 @@
+html, body { margin: 5; padding: 5; }
+textarea
+{
+    width: inherit;
+    height: 100px;
+    resize: none;
+}
+div.queryArea
+{
+    width: 300px;
+}
+#queryButton
+{
+    float: right;
+}
+/* Tree View */
+ol.treeView
+{
+    padding: 0px;
+    width: 300px;
+    list-style: none;
+}
+
+li.treeElement
+{
+    margin-left: 22px;
+    list-style: none;
+}
+
+ol input + label + ol
+{
+    display: none
+}
+ol input:checked + label + ol
+{
+    display: block
+}

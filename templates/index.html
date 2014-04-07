@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+    <head>
+        <title>MongoDbWebAdmin</title>
+        <link rel="stylesheet" type="text/css" href="styles.css" media="screen"/>
+    </head>
+    <body>
+        <h1>Mongo db web admin</h1>
+        <h3>Query:</h3>
+        <div class="queryArea">
+            <div style="padding: 5px">
+                Databases:
+                <select name="database_name" form="query">
+                    {% for database_name in database_names %}
+                        <option value="{{ database_name }}">{{ database_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <textarea name="query_text" form="query"></textarea>
+            <input type="submit" form="query" value="Execute" id="queryButton">
+        </div>
+        <h3>Collections:</h3>
+        <ol class="treeView">
+            <li class="treeElement">Section 1</li>
+            <input type="checkbox" id="subfolder_1"/>
+            <label for="subfolder_1">Subfolder 1</label>
+            <ol class="treeSubElement">
+                <li class="treeElement"> Subsection 1</li>
+                <input type="checkbox" id="subfolder_2"/>
+                <label for="subfolder_1">Subfolder 1</label>
+                <ol class="treeSubElement">
+                    <li class="treeElement">Sub sub 1</li>
+                    <li class="treeElement">Sub sub 2</li>
+                </ol>
+                <li class="treeElement"> Subsection 2</li>
+            </ol>
+            <li class="treeElement">Section 2</li>
+            <li class="treeElement">Section 3</li>
+            </ol>
+    </body>
+</html>
