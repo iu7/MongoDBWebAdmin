@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <title>MongoDbWebAdmin</title>
-        <link rel="stylesheet" type="text/css" href="styles.css" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}" media="screen"/>
     </head>
     <body>
         <h1>Mongo db web admin</h1>
@@ -21,21 +21,18 @@
         </div>
         <h3>Collections:</h3>
         <ol class="treeView">
-            <li class="treeElement">Section 1</li>
-            <input type="checkbox" id="subfolder_1"/>
-            <label for="subfolder_1">Subfolder 1</label>
-            <ol class="treeSubElement">
-                <li class="treeElement"> Subsection 1</li>
-                <input type="checkbox" id="subfolder_2"/>
-                <label for="subfolder_1">Subfolder 1</label>
-                <ol class="treeSubElement">
-                    <li class="treeElement">Sub sub 1</li>
-                    <li class="treeElement">Sub sub 2</li>
-                </ol>
-                <li class="treeElement"> Subsection 2</li>
-            </ol>
-            <li class="treeElement">Section 2</li>
-            <li class="treeElement">Section 3</li>
-            </ol>
+						{% for database_name in database_names %}
+						<div>
+            	<input type="checkbox" id="subfolder"/>
+            	<label for="subfolder">{{database_name}}</label>
+							<ol class="treeSubElement">
+								{% for c in collections[database_name] %}
+									<li class="treeElement">{{c}}</li>
+								{% endfor %}
+							</ol>
+						</div>
+						{% endfor %}
+				</ol>
+				<form id="query" method="post" action="{{ submit_target }}"></form>
     </body>
 </html>
