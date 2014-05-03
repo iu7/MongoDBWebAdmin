@@ -1,37 +1,46 @@
-html, body { margin: 5; padding: 5; }
-textarea
+.template
 {
-    width: inherit;
-    height: 100px;
-    resize: none;
-}
-div.queryArea
-{
-    width: 300px;
-}
-#queryButton
-{
-    float: right;
-}
-/* Tree View */
-ol.treeView
-{
-    padding: 0px;
-    width: 300px;
-    list-style: none;
+    display: none;
 }
 
-li.treeElement
+.indented 
 {
-    margin-left: 22px;
-    list-style: none;
+    margin-left: 30px;
 }
 
-ol input + label + ol
+.rollable[status="unrolled"] > .rolled_body
 {
-    display: none
+    display: none;
 }
-ol input:checked + label + ol
+
+.rollable[status="unloaded"] > :not(.header):not(.rolled_body):not(.footer),
+.rollable[status="loading"] > :not(.header):not(.rolled_body):not(.footer),
+.rollable[status="rolledup"] > :not(.header):not(.rolled_body):not(.footer)
 {
-    display: block
+    display: none;
 }
+
+.rollable > .header::before
+{
+    margin-right: 3px;
+}
+
+.rollable[status="unloaded"] > .header::before,
+.rollable[status="rolledup"] > .header::before
+{
+    content: '▶';
+}   
+
+.rollable[status="loading"] > .header::before
+{
+    content: '●';
+}
+
+.rollable[status="unrolled"] > .header::before
+{
+    content: '▼';
+}
+
+  
+
+
