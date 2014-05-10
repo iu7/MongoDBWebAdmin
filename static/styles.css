@@ -1,3 +1,8 @@
+#root
+{
+    max-width: 50%
+}
+
 .indented 
 {
     margin-left: 30px;
@@ -13,10 +18,12 @@
 {
     content: '▶';
 }   
+
 .rollable[status="loading"] > .toggler::after
 {
     content: '●';
 }
+
 .rollable[status="unrolled"] > .toggler::after
 {
     content: '▼';
@@ -29,15 +36,11 @@
     display: none;
 }
 
-
-
-
-
-
 .controls
 {
     float: right;
 }
+
 .controls > .delete::after
 {
     content: '✖';

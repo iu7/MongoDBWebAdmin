@@ -14,7 +14,10 @@
             <span class="presistent">{</span>
             <span class="toggler"></span>
             {% for key, value in object.items() %}
-                <div class="indented">
+                <div class="pair deletable indented">
+                    <span class="controls presistent">
+                        <span class="delete"></span>
+                    </span>
                     <span>{{ render_object(key) }}</span>
                     <span>:</span>
                     <span>{{ render_object(value) }}</span>
@@ -30,7 +33,10 @@
             <span class="presistent">[</span>
             <span class="toggler"></span>
             {% for item in object %}
-                <div class="indented">
+                <div class="item deletable indented">
+                    <span class="controls presistent">
+                        <span class="delete"></span>
+                    </span>
                     {{ render_object(item) }}
                     {% if not loop.last %}
                         <span>,</span>

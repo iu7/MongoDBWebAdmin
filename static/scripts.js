@@ -1,4 +1,20 @@
 $(document).ready(function() {
+    var deletePairOrItem = function(database_name, collection_name, document_id, pair_or_item) {
+        pair_or_item.remove();
+    };
+    
+    var deleteDocument = function(database_name, collection_name, document) {
+        document.remove();
+    };
+    
+    var deleteCollection = function(database_name, collection) {
+        collection.remove();
+    };
+    
+    var deleteDatabase = function(database) {
+        database.remove();
+    };
+    
     var toggleRollable = function(rollable) {
         var status = rollable.attr('status');
         if (status == 'unrolled') {
@@ -13,8 +29,12 @@ $(document).ready(function() {
         document.attr('status', 'loading');
         $.get('/load/' + database_name + '/' + collection_name + '/' + document_id, function(object) {
             document.removeClass('rollable');
-            document.children(':not(.id):not(.content-placeholder)').remove();
-            $(object).replaceAll(document.children('.content-placeholder'));
+            document.children('.content-faker').remove();
+            object = $(object).replaceAll(document.children('.content-placeholder'));
+            object.find('.controls').children('.delete').on('click', function() {
+                var pair_or_item = $(this).closest('.pair, .item');
+                deletePairOrItem(database_name, collection_name, document_id, pair_or_item);
+            });
             document.find('.toggler').on('click', function() {
                 var object_or_array = $(this).parent();
                 toggleRollable(object_or_array);
@@ -27,10 +47,14 @@ $(document).ready(function() {
         var collection_name = collection.children('.name').html();
         collection.attr('status', 'loading');
         $.get('/load/' + database_name + '/' + collection_name, function(documents) {
-            $(documents).replaceAll(collection.children('.content-placeholder'))
-            .children('.toggler').on('click', function() {
+            documents = $(documents).replaceAll(collection.children('.content-placeholder'));
+            documents.children('.toggler').on('click', function() {
                 var document = $(this).parent();
                 loadDocument(database_name, collection_name, document);
+            });
+            documents.children('.controls').children('.delete').on('click', function() {
+                var document = $(this).closest('.document');
+                deleteDocument(database_name, collection_name, document);
             });
             collection.children('.toggler').off('click').on('click', function() {
                 toggleRollable(collection);
@@ -43,10 +67,14 @@ $(document).ready(function() {
         var database_name = database.children('.name').html();
         database.attr('status', 'loading');
         $.get('/load/' + database_name, function(collections) {
-            $(collections).replaceAll(database.children('.content-placeholder'))
-            .children('.toggler').on('click', function() {
+            collections = $(collections).replaceAll(database.children('.content-placeholder'));
+            collections.children('.toggler').on('click', function() {
                 var collection = $(this).parent();
                 loadCollection(database_name, collection);
+            });
+            collections.children('.controls').children('.delete').on('click', function() {
+                var collection = $(this).closest('.collection');
+                deleteCollection(database_name, collection);
             });
             database.children('.toggler').off('click').on('click', function() {
                 toggleRollable(database);
@@ -57,10 +85,14 @@ $(document).ready(function() {
     
     var loadRoot = function() {
         $.get('/load', function(databases) {
-            $(databases).replaceAll($('#root').children('.content-placeholder'))
-            .children('.toggler').on('click', function() {
+            databases = $(databases).replaceAll($('#root').children('.content-placeholder'))
+            databases.children('.toggler').on('click', function() {
                 var database = $(this).parent();
                 loadDatabase(database);
+            });
+            databases.children('.controls').children('.delete').on('click', function() {
+                var database = $(this).closest('.database');
+                deleteDatabase(database);
             });
         });
     };

@@ -1,11 +1,14 @@
 {% for document_id in document_ids %}
-    <div class="document indented rollable" status="unloaded">
+    <div class="document deletable rollable indented" status="unloaded">
+        <span class="controls presistent">
+            <span class="delete"></span>
+        </span>
         <span class="id presistent">{{ document_id }}</span>
-        <span class="presistent">{</span>
-        <span class="toggler"></span>
+        <span class="presistent content-faker">{</span>
+        <span class="toggler content-faker"></span>
         <span class="content-placeholder">
             <!-- object -->
         </span>
-        <span class="presistent">}</span>
+        <span class="presistent content-faker">}</span>
     </div>
 {% endfor %}
