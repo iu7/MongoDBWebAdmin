@@ -1,41 +1,45 @@
-.template
-{
-    display: none;
-}
-
 .indented 
 {
     margin-left: 30px;
 }
 
-.rollable[status="unloaded"] > :not(.header):not(.footer),
-.rollable[status="loading"] > :not(.header):not(.footer),
-.rollable[status="rolledup"] > :not(.header):not(.footer)
-{
-    display: none;
-}
-
-.rollable > .header::after
+.rollable > .toggler::after
 {
     margin: 2px;
-}
+}  
 
-.rollable[status="unloaded"] > .header::after,
-.rollable[status="rolledup"] > .header::after
+.rollable[status="unloaded"] > .toggler::after,
+.rollable[status="rolledup"] > .toggler::after
 {
     content: '▶';
 }   
-
-.rollable[status="loading"] > .header::after
+.rollable[status="loading"] > .toggler::after
 {
     content: '●';
 }
-
-.rollable[status="unrolled"] > .header::after
+.rollable[status="unrolled"] > .toggler::after
 {
     content: '▼';
 }
 
-  
+.rollable[status="unloaded"] > :not(.toggler):not(.presistent),
+.rollable[status="loading"] > :not(.toggler):not(.presistent),
+.rollable[status="rolledup"] > :not(.toggler):not(.presistent)
+{
+    display: none;
+}
 
+
+
+
+
+
+.controls
+{
+    float: right;
+}
+.controls > .delete::after
+{
+    content: '✖';
+}
 

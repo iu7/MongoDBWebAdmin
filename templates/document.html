@@ -1,0 +1,45 @@
+{% macro render_object(object) %}
+    {% if object is none %}    
+        <span>null</span>
+    {% elif object is sameas false %}
+        <span>false</span>
+    {% elif object is sameas true %}
+        <span>true</span>
+    {% elif object is number %}    
+        <span>{{ object }}</span>
+    {% elif object is string %}    
+        <span>{{ '"' + object + '"' }}</span>
+    {% elif object is mapping %}
+        <span class="rollable" status="unrolled">
+            <span class="presistent">{</span>
+            <span class="toggler"></span>
+            {% for key, value in object.items() %}
+                <div class="indented">
+                    <span>{{ render_object(key) }}</span>
+                    <span>:</span>
+                    <span>{{ render_object(value) }}</span>
+                    {% if not loop.last %}
+                        <span>,</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+             <span class="presistent">}</span>
+        </span>
+    {% elif object is sequence %}
+        <span class="rollable" status="unrolled">
+            <span class="presistent">[</span>
+            <span class="toggler"></span>
+            {% for item in object %}
+                <div class="indented">
+                    {{ render_object(item) }}
+                    {% if not loop.last %}
+                        <span>,</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <span class="presistent">]</span>
+        </span>
+    {% endif %}
+{% endmacro %}
+
+{{ render_object(object) }}

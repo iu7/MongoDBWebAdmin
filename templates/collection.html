@@ -1,0 +1,11 @@
+{% for document_id in document_ids %}
+    <div class="document indented rollable" status="unloaded">
+        <span class="id presistent">{{ document_id }}</span>
+        <span class="presistent">{</span>
+        <span class="toggler"></span>
+        <span class="content-placeholder">
+            <!-- object -->
+        </span>
+        <span class="presistent">}</span>
+    </div>
+{% endfor %}
