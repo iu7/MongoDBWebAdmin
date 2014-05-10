@@ -8,35 +8,30 @@
     margin-left: 30px;
 }
 
-.rollable[status="unrolled"] > .rolled_body
+.rollable[status="unloaded"] > :not(.header):not(.footer),
+.rollable[status="loading"] > :not(.header):not(.footer),
+.rollable[status="rolledup"] > :not(.header):not(.footer)
 {
     display: none;
 }
 
-.rollable[status="unloaded"] > :not(.header):not(.rolled_body):not(.footer),
-.rollable[status="loading"] > :not(.header):not(.rolled_body):not(.footer),
-.rollable[status="rolledup"] > :not(.header):not(.rolled_body):not(.footer)
+.rollable > .header::after
 {
-    display: none;
+    margin: 2px;
 }
 
-.rollable > .header::before
-{
-    margin-right: 3px;
-}
-
-.rollable[status="unloaded"] > .header::before,
-.rollable[status="rolledup"] > .header::before
+.rollable[status="unloaded"] > .header::after,
+.rollable[status="rolledup"] > .header::after
 {
     content: '▶';
 }   
 
-.rollable[status="loading"] > .header::before
+.rollable[status="loading"] > .header::after
 {
     content: '●';
 }
 
-.rollable[status="unrolled"] > .header::before
+.rollable[status="unrolled"] > .header::after
 {
     content: '▼';
 }
