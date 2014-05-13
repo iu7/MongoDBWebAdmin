@@ -16,7 +16,7 @@ def load_document(database_name, collection_name, document_id):
     collection = database[collection_name]
     object = collection.find({u'_id':bson.ObjectId(document_id)})[0]
     del object[u'_id']
-    return flask.render_template('document.html', object=object) 
+    return flask.render_template('document.html', object=object, escape=json.dumps) 
 
 @flask_server.route('/load/<database_name>/<collection_name>')
 def load_collection(database_name, collection_name):

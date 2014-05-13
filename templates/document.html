@@ -8,7 +8,7 @@
     {% elif object is number %}    
         <span>{{ object }}</span>
     {% elif object is string %}    
-        <span>{{ '"' + object + '"' }}</span>
+        <span>{{ escape(object) }}</span>
     {% elif object is mapping %}
         <span class="rollable" status="unrolled">
             <span class="presistent">{</span>
