@@ -1,9 +1,6 @@
 {% for collection_name in collection_names %}
-    <div class="collection rollable indented" status="unloaded">
-        <span class="controls presistent">
-            <span class="append"></span>
-            <span class="delete"></span>
-        </span>
+    <div class="collection deletable rollable indented" status="unloaded">
+        <span class="deleter presistent"></span>
         <span class="name presistent">{{ collection_name }}</span>
         <span class="toggler"></span>
         <span class="content-placeholder">

@@ -1,54 +1,56 @@
 {% macro render_object(object) %}
     {% if object is none %}    
-        <span class="editable">
-            {{ render_primitive(object) }}
+        <span class="editable" contentEditable="true">
+            {{- render_primitive(object) -}}
         </span>
     {% elif object is sameas false or object is sameas true %}
-        <span class="editable">
-            {{ render_primitive(object) }}
+        <span class="editable" contentEditable="true">
+            {{- render_primitive(object) -}}
         </span>
     {% elif object is number %}    
-        <span class="editable">
-            {{ render_primitive(object) }}
+        <span class="editable" contentEditable="true">
+            {{- render_primitive(object) -}}
         </span>
     {% elif object is string %}    
-        <span class="editable">
-            {{ render_primitive(object) }}
+        <span class="editable" contentEditable="true">
+            {{- render_primitive(object) -}}
         </span>
     {% elif object is mapping %}
-        <span class="rollable" status="unrolled">
+        <span class="object rollable" status="unrolled">
             <span class="presistent">{</span>
             <span class="toggler"></span>
+            <span class="insert-anchor">
+                <span class="inserter"></span>
+            </span>
             {% for key, value in object.items() %}
-                <div class="pair deletable indented">
-                    <span class="controls presistent">
-                        <span class="append"></span>
-                        <span class="delete"></span>
-                    </span>
-                    <span>{{ render_object(key) }}</span>
+                <div class="pair deletable indented insert-anchor">
+                    <span class="deleter"></span>
+                    <span class="key">{{ render_object(key) }}</span>
                     <span>:</span>
-                    <span>{{ render_object(value) }}</span>
+                    <span class="value">{{ render_object(value) }}</span>
                     {% if not loop.last %}
                         <span>,</span>
                     {% endif %}
+                    <span class="inserter"></span>
                 </div>
             {% endfor %}
-             <span class="presistent">}</span>
+            <span class="presistent">}</span>
         </span>
     {% elif object is sequence %}
-        <span class="rollable" status="unrolled">
+        <span class="array rollable" status="unrolled">
             <span class="presistent">[</span>
             <span class="toggler"></span>
+            <span class="insert-anchor">
+                <span class="inserter"></span>
+            </span>
             {% for item in object %}
-                <div class="item deletable indented">
-                    <span class="controls presistent">
-                        <span class="append"></span>
-                        <span class="delete"></span>
-                    </span>
+                <div class="item deletable indented insert-anchor">
+                    <span class="deleter"></span>
                     {{ render_object(item) }}
                     {% if not loop.last %}
                         <span>,</span>
                     {% endif %}
+                    <span class="inserter"></span>
                 </div>
             {% endfor %}
             <span class="presistent">]</span>

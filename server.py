@@ -10,7 +10,13 @@ flask_server = flask.Flask(__name__)
 flask_server.jinja_env.trim_blocks = True
 mongo_client = pymongo.MongoClient('localhost', 27017)
 
-@flask_server.route('/load/document')
+
+@flask_server.route('/render-object')
+def render_object():
+    object = json.loads(flask.request.args['json'])
+    return flask.render_template('document.html', object=object, render_primitive=json.dumps) 
+
+@flask_server.route('/load-document')
 def load_document():
     database_name = flask.request.args['database_name']
     collection_name = flask.request.args['collection_name']
@@ -21,7 +27,7 @@ def load_document():
     del object[u'_id']
     return flask.render_template('document.html', object=object, render_primitive=json.dumps) 
 
-@flask_server.route('/load/collection')
+@flask_server.route('/load-collection')
 def load_collection():
     database_name = flask.request.args['database_name']
     collection_name = flask.request.args['collection_name']
@@ -30,14 +36,14 @@ def load_collection():
     document_ids = [str(document[u'_id']) for document in collection.find({}, {'_id':1})]
     return flask.render_template('collection.html', document_ids=document_ids)
 
-@flask_server.route('/load/database')
+@flask_server.route('/load-database')
 def load_database():
     database_name = flask.request.args['database_name']
     database = mongo_client[database_name]
     collection_names = database.collection_names()
     return flask.render_template('database.html', collection_names=collection_names)
 
-@flask_server.route('/load/root')
+@flask_server.route('/load-root')
 def load_root():
     database_names = mongo_client.database_names()
     return flask.render_template('root.html', database_names=database_names)

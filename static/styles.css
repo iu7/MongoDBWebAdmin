@@ -37,20 +37,48 @@
 }
 
 
+.editable[invalid="true"]
+{
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.editable[invalid="true"]:empty::before
+{
+    content: '⋯';
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.editable[invalid="true"]:hover::after
+{
+    content: 'Error: invalid JSON.';
+    display: block;
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    margin-left: 20px; margin-top: 10px;
+    padding-left: 3px; padding-right: 3px;
+    outline-style: none;
+}
 
 
+#root div:hover
+{
+    background-color: rgba(0, 0, 255, 0.07);
+}
 
-.controls
+
+.deleter
 {
     float: right;
 }
 
-.controls > .delete::after
+.deleter::after
 {
     content: '✖';
 }
 
-.controls > .append::after
+
+.inserter:after
 {
-    content: '+';
+    content: '⊕';
 }
