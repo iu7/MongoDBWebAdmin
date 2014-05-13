@@ -36,6 +36,10 @@
     display: none;
 }
 
+
+
+
+
 .controls
 {
     float: right;
@@ -46,3 +50,7 @@
     content: '✖';
 }
 
+.controls > .append::after
+{
+    content: '+';
+}
