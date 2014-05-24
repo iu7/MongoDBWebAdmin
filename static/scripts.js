@@ -21,7 +21,7 @@ $(document).ready(function() {
             return {
                 blur: function(event) {
                     var editable = $(this);
-                    var content = editable.text();
+                    var content = editable.text().trim();
                     if (isValid(content)) {
                         $.get('/render-object', {json: content}, function(object) {
                             var object = $(object);
@@ -37,7 +37,7 @@ $(document).ready(function() {
                     }
                 },
                 keyup: function(event) {
-                    var content = $(this).text();
+                    var content = $(this).text().trim();
                     if (isValid(content)) {
                         $(this).removeAttr('invalid');
                     } else {
