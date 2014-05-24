@@ -11,6 +11,16 @@ flask_server.jinja_env.trim_blocks = True
 mongo_client = pymongo.MongoClient('localhost', 27017)
 
 
+@flask_server.route('/render-empty-pair')
+def render_empty_pair():
+    last = json.loads(flask.request.args['last'])
+    return flask.render_template('empty_pair.html', last=last, render_primitive=json.dumps)
+    
+@flask_server.route('/render-empty-item')
+def render_empty_item():
+    last = json.loads(flask.request.args['last'])
+    return flask.render_template('empty_item.html', last=last, render_primitive=json.dumps) 
+
 @flask_server.route('/render-object')
 def render_object():
     object = json.loads(flask.request.args['json'])

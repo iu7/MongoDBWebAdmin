@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    var isEmptySet = function(jSet) {
+        return jSet.length == 0; 
+    };
+    
     (function() {
         var isJSON = function(text) {
             try {
@@ -49,10 +53,32 @@ $(document).ready(function() {
    
     $(document).on({
         click: function() {
+            var inserter = $(this);
+            var insert_anchor = inserter.closest('.insert-anchor');
+            var last = isEmptySet(insert_anchor.next('.insert-anchor'));
+            var what = inserter.attr('what');
+            $.get('/render-empty-' + what, {last: last}, function(empty_pair) {
+                if (last) {
+                    insert_anchor.children('.value').after('<span class="separator">,</span>')
+                }
+                insert_anchor.after(empty_pair);
+            });
+        }
+    }, '.inserter');
+   
+    $(document).on({
+        click: function() {
+            var deleter = $(this);
             var deletable = $(this).closest('.deletable');
+            var previous_deletable = deletable.prev('.deletable');
+            var last = isEmptySet(deletable.next('.deletable'));
             deletable.remove();
+            if (last) {
+                previous_deletable.children('.separator').remove();
+            }
         }
     }, '.deleter');
+   
    
    
     $(document).on({
@@ -87,9 +113,6 @@ $(document).ready(function() {
                 document.removeClass('rollable');
                 document.children('.content-faker').remove();
                 document.children('.content-placeholder').replaceWith(object);
-                
-                
-                
                 document.attr('status', 'unrolled');
             });
         }

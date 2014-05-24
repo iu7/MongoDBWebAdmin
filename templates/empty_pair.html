@@ -1,0 +1,4 @@
+{% from 'empty_editable.html' import render_empty_editable %}
+{% from 'document.html' import wrap_pair %}
+
+{{ wrap_pair(render_empty_editable(), render_empty_editable(), last) }}

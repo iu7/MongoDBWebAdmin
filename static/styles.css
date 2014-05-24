@@ -1,11 +1,6 @@
-#root
-{
-    max-width: 30%
-}
-
 .indented 
 {
-    margin-left: 30px;
+    margin-left: 40px;
 }
 
 .rollable > .toggler::after
@@ -61,24 +56,34 @@
 }
 
 
+/*
 #root div:hover
 {
     background-color: rgba(0, 0, 255, 0.07);
 }
+*/
 
+
+
+.control:not(:hover)
+{
+    opacity: 0.2;
+}
 
 .deleter
 {
-    float: right;
+    position: relative;
 }
 
-.deleter::after
+.deleter::before
 {
     content: '✖';
+    position: absolute;
+    right: -100%;
+    padding-left: 3px; padding-right: 3px;
 }
 
-
-.inserter:after
+.inserter::after
 {
     content: '⊕';
 }

@@ -1,57 +1,61 @@
+{% macro wrap_pair(key, value, last) %}
+    <div class="pair deletable indented insert-anchor">
+        <span class="deleter control"></span>
+        <span class="key">{{ key }}</span>
+        <span>:</span>
+        <span class="value">{{ value }}</span>
+        {% if not last %}
+            <span class="separator">,</span>
+        {% endif %}
+        <span class="inserter control" what="pair"></span>
+    </div>
+{% endmacro %}
+
+{% macro wrap_item(value, last) %}
+    <div class="item deletable indented insert-anchor">
+        <span class="deleter control"></span>
+        <span class="value">{{ value }}</span>
+        {% if not last %}
+            <span class="separator">,</span>
+        {% endif %}
+        <span class="inserter control" what="item"></span>
+    </div>
+{% endmacro %}
+
 {% macro render_object(object) %}
     {% if object is none %}    
         <span class="editable" contentEditable="true">
-            {{- render_primitive(object) -}}
+            {{ render_primitive(object) }}
         </span>
     {% elif object is sameas false or object is sameas true %}
         <span class="editable" contentEditable="true">
-            {{- render_primitive(object) -}}
+            {{ render_primitive(object) }}
         </span>
     {% elif object is number %}    
         <span class="editable" contentEditable="true">
-            {{- render_primitive(object) -}}
+            {{ render_primitive(object) }}
         </span>
     {% elif object is string %}    
         <span class="editable" contentEditable="true">
-            {{- render_primitive(object) -}}
+            {{ render_primitive(object) }}
         </span>
     {% elif object is mapping %}
         <span class="object rollable" status="unrolled">
             <span class="presistent">{</span>
-            <span class="toggler"></span>
-            <span class="insert-anchor">
-                <span class="inserter"></span>
-            </span>
+            <span class="toggler control"></span>
+            <span class="inserter control insert-anchor" what="pair"></span>
             {% for key, value in object.items() %}
-                <div class="pair deletable indented insert-anchor">
-                    <span class="deleter"></span>
-                    <span class="key">{{ render_object(key) }}</span>
-                    <span>:</span>
-                    <span class="value">{{ render_object(value) }}</span>
-                    {% if not loop.last %}
-                        <span>,</span>
-                    {% endif %}
-                    <span class="inserter"></span>
-                </div>
-            {% endfor %}
+                {{ wrap_pair(render_object(key), render_object(value), loop.last) }}
+            {% endfor %} 
             <span class="presistent">}</span>
         </span>
     {% elif object is sequence %}
         <span class="array rollable" status="unrolled">
             <span class="presistent">[</span>
-            <span class="toggler"></span>
-            <span class="insert-anchor">
-                <span class="inserter"></span>
-            </span>
+            <span class="toggler control"></span>
+            <span class="inserter control insert-anchor" what="item"></span>
             {% for item in object %}
-                <div class="item deletable indented insert-anchor">
-                    <span class="deleter"></span>
-                    {{ render_object(item) }}
-                    {% if not loop.last %}
-                        <span>,</span>
-                    {% endif %}
-                    <span class="inserter"></span>
-                </div>
+                {{ wrap_item(render_object(item), loop.last) }}
             {% endfor %}
             <span class="presistent">]</span>
         </span>
