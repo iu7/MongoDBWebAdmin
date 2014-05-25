@@ -1,0 +1,13 @@
+<div></div>
+<datalist id="database-name-list">
+    {% for database_name in database_names %}
+        <option value="{{- database_name -}}">{{- database_name -}}</option>
+    {% endfor%}        
+</datalist>
+<input type="text" id="database-name" list="database-name-list" placeholder="Database name..." class="generic">
+<input type="text" id="login" placeholder="Login..." class="generic">
+<input type="password" id="password" placeholder="Password..." class="generic">
+<span id="open-database" class="loading-button"></span>
+
+
+
