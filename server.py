@@ -13,7 +13,7 @@ mongo_client = pymongo.MongoClient('localhost', 27017)
 @flask_server.route('/render-empty-pair')
 def render_empty_pair():
     last = json.loads(flask.request.args['last'])
-    return flask.render_template('empty_pair.html', last=last, render_primitive=json.dumps)
+    return flask.render_template('empty_pair.html', last=last)
     
 @flask_server.route('/render-empty-item')
 def render_empty_item():
@@ -48,41 +48,62 @@ def render_object():
 
 def needs_mongo_client(handler):
     @functools.wraps(handler)
-    def needs_mongo_client_wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs):
         server_address = flask.request.args['server_address']
-        if server_address == "":
-            return flask.render_template('connection-error.html');
+        if server_address == '':
+            return flask.render_template('error.html', message='Server address is empty.');
         try:
             mongo_client = pymongo.MongoClient(server_address)
             response = handler(*args, mongo_client=mongo_client, **kwargs)
             mongo_client.close();
             return response
         except pymongo.errors.ConnectionFailure:
-            return flask.render_template('connection-error.html');
-    return needs_mongo_client_wrapper
+            return flask.render_template('error.html', message='Unable to connect to server.');
+    return wrapper
     
 def needs_database(handler):
     @functools.wraps(handler)
     @needs_mongo_client
-    def needs_database_wrapper(mongo_client, *args, **kwargs):
+    def wrapper(mongo_client, *args, **kwargs):
         database_name = flask.request.args['database_name']
+        if database_name == '':
+            return flask.render_template('error.html', message='Database name is empty.')
         login = flask.request.args['login']
-        if login == '':
-            login = None
         password = flask.request.args['password']
-        if password == '':
-            password = None
         database = mongo_client[database_name]
         try:
-            if login:
+            if login != '' and password == '':
+                return flask.render_template('error.html', message='Password required.')
+            if login == '' and password != '':
+                return flask.render_template('error.html', message='Login required.')
+            if login != '' and password != '':
                 database.authenticate(login, password)
             response = handler(*args, mongo_client=mongo_client, database=database, **kwargs)
-            if login:
+            if login != '' and password != '':
                 database.logout();
         except pymongo.errors.PyMongoError:
-            return flask.render_template('authentication-error.html')
+            return flask.render_template('error.html', message='Unable to log into database.')
         return response
-    return needs_database_wrapper
+    return wrapper
+
+def needs_collection(handler):
+    @functools.wraps(handler)
+    @needs_database
+    def wrapper(mongo_client, database, *args, **kwargs):
+        collection_name = flask.request.args['collection_name']
+        if collection_name == '':
+            return flask.render_template('error.html', message='Collection name required.')
+        collection = database[collection_name]
+        return handler(*args, mongo_client=mongo_client, database=database, collection=collection, **kwargs)
+    return wrapper
+
+@flask_server.route('/documents')
+@needs_collection
+def get_documents(mongo_client, database, collection):
+    selector = json.loads(flask.request.args['selector'])
+    projector = json.loads(flask.request.args['projector'])
+    documents = [document for document in collection.find(selector, projector)]    
+    return flask.render_template('documents.html', documents=documents, render_primitive=json.dumps)
 
 @flask_server.route('/collection-names')
 @needs_database

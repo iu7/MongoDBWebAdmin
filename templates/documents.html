@@ -1,0 +1,12 @@
+{% from 'object.html' import render_object %}
+
+<div></div>
+{% for document in documents %}
+    <div>
+        {{ render_object(document) }}
+    </div>
+{% endfor %}        
+
+
+
+

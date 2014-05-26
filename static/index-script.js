@@ -36,11 +36,12 @@ $(document).ready(function() {
         click: function() {
             $('#open-collection').nextAll().remove();
             $('#open-collection').attr('loading', 'true');
-            $.get('/object-ids', {
+            $.get('/documents', {
                 server_address: $('#server-address').val(),
                 database_name: $('#database-name').val(),
                 login: $('#login').val(),
                 password: $('#password').val(),
+                collection_name: $('#collection-name').val(),
                 selector: normalizeJSON($('#selector').text()),
                 projector: normalizeJSON($('#projector').text())
             }).done(function(response) {
