@@ -8,6 +8,21 @@ body
     margin: 2px;
 }
 
+.document-reloader:after
+{
+    content: '↻'
+}
+
+.document-updater:after
+{
+    content: '✔'
+}
+
+.document-deleter:after
+{
+    content: '✖'
+}
+
 .object
 {
     font-family: 'Arial';

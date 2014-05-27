@@ -8,7 +8,15 @@ import json
 import bson
 
 flask_server = flask.Flask(__name__)
-mongo_client = pymongo.MongoClient('localhost', 27017)
+
+def remove_id_if(object, condition):
+    if condition:
+        del object['_id']
+    return object
+    
+flask_server.jinja_env.globals.update(remove_id_if=remove_id_if)
+
+flask_server.jinja_env.globals.update(render_primitive=json.dumps)
 
 @flask_server.route('/render-empty-pair', methods=['POST'])
 def render_empty_pair():
@@ -18,12 +26,12 @@ def render_empty_pair():
 @flask_server.route('/render-empty-item', methods=['POST'])
 def render_empty_item():
     last = json.loads(flask.request.form['last'])
-    return flask.render_template('empty_item.html', last=last, render_primitive=json.dumps) 
+    return flask.render_template('empty_item.html', last=last) 
 
 @flask_server.route('/render-object', methods=['POST'])
 def render_object():
     object = json.loads(flask.request.form['json'])
-    return flask.render_template('object.html', object=object, render_primitive=json.dumps) 
+    return flask.render_template('object.html', object=object) 
 
 #~ @flask_server.route('/load-document')
 #~ def load_document():
@@ -97,6 +105,55 @@ def needs_collection(handler):
         return handler(*args, mongo_client=mongo_client, database=database, collection=collection, **kwargs)
     return wrapper
 
+
+def fix_document_id(document):
+    document[u'_id'] = str(document[u'_id'])
+    return document
+
+
+@flask_server.route('/new-document', methods=['POST'])
+@needs_collection
+def new_document(mongo_client, database, collection):
+    document_id = str(collection.insert({}, manipulate=True))
+    return flask.render_template('document.html', document={u'_id': document_id}, exclude_id=False)
+
+
+@flask_server.route('/update-document', methods=['POST'])
+@needs_collection
+def update_document(mongo_client, database, collection):
+    document_id = bson.ObjectId(flask.request.form['document_id'])
+    try:
+        document_object = json.loads(flask.request.form['document_text'])
+    except ValueError:
+        return flask.render_template('error.html', message='Invalid document.')
+    document_object[u'_id'] = document_id
+    collection.update({u'_id': document_id}, document_object)
+    return ''
+
+@flask_server.route('/reload-document', methods=['POST'])
+@needs_collection
+def reload_document(mongo_client, database, collection):
+    document_id = bson.ObjectId(flask.request.form['document_id'])
+    try:
+        projector = json.loads(flask.request.form['projector'])
+    except ValueError:
+        return flask.render_template('error.html', message='Invalid projector.')
+    exclude_id = u'_id' in projector and projector[u'_id'] == False
+    if exclude_id:
+         del projector[u'_id']
+    if projector == {}:
+        projector = None
+    document_object = fix_document_id(collection.find({u'_id': document_id}, projector)[0])
+    document_object = remove_id_if(document_object, exclude_id)
+    return flask.render_template('object.html', object=document_object)
+
+@flask_server.route('/delete-document', methods=['POST'])
+@needs_collection
+def delete_document(mongo_client, database, collection):
+    document_id = bson.ObjectId(flask.request.form['document_id'])
+    collection.remove({u'_id': document_id})
+    return ''
+
 @flask_server.route('/documents', methods=['POST'])
 @needs_collection
 def documents(mongo_client, database, collection):
@@ -108,12 +165,13 @@ def documents(mongo_client, database, collection):
         projector = json.loads(flask.request.form['projector'])
     except ValueError:
         return flask.render_template('error.html', message='Invalid projector.')
-    def fix_id(document):
-        if u'_id' in document:
-            document[u'_id'] = str(document[u'_id'])
-        return document
-    documents = [fix_id(document) for document in collection.find(selector, projector if projector != {} else None)]    
-    return flask.render_template('documents.html', documents=documents, render_primitive=json.dumps)
+    exclude_id = u'_id' in projector and projector[u'_id'] == False
+    if exclude_id:
+         del projector[u'_id']
+    if projector == {}:
+        projector = None
+    documents = [fix_document_id(document) for document in collection.find(selector, projector)]    
+    return flask.render_template('documents.html', documents=documents, exclude_id=exclude_id)
 
 @flask_server.route('/collection-names', methods=['POST'])
 @needs_database

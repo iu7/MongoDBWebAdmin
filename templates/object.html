@@ -25,19 +25,19 @@
 {% macro render_object(object) %}
     {% if object is none %}    
         <span class="primitive editable" contentEditable="true">
-            {{- object|tojson -}}
+            {{- render_primitive(object) -}}
         </span>
     {% elif object is sameas false or object is sameas true %}
         <span class="primitive editable" contentEditable="true">
-            {{- object|tojson -}}
+            {{- render_primitive(object) -}}
         </span>
     {% elif object is number %}    
         <span class="primitive editable" contentEditable="true">
-            {{- object|tojson -}}
+            {{- render_primitive(object) -}}
         </span>
     {% elif object is string %}    
         <span class="primitive editable" contentEditable="true">
-            {{- object|tojson -}}
+            {{- render_primitive(object) -}}
         </span>
     {% elif object is mapping %}
         <span class="object rollable" status="unrolled">
