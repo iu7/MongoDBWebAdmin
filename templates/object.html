@@ -24,19 +24,19 @@
 
 {% macro render_object(object) %}
     {% if object is none %}    
-        <span class="editable" contentEditable="true">
+        <span class="primitive editable" contentEditable="true">
             {{- object|tojson -}}
         </span>
     {% elif object is sameas false or object is sameas true %}
-        <span class="editable" contentEditable="true">
+        <span class="primitive editable" contentEditable="true">
             {{- object|tojson -}}
         </span>
     {% elif object is number %}    
-        <span class="editable" contentEditable="true">
+        <span class="primitive editable" contentEditable="true">
             {{- object|tojson -}}
         </span>
     {% elif object is string %}    
-        <span class="editable" contentEditable="true">
+        <span class="primitive editable" contentEditable="true">
             {{- object|tojson -}}
         </span>
     {% elif object is mapping %}

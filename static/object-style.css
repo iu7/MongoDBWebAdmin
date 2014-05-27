@@ -68,8 +68,7 @@
 .deleter::before
 {
     content: '✖';
-    position: absolute;
-    right: -100%;
+    position: absolute; right: -100%;
     padding-left: 3px; padding-right: 3px;
 }
 

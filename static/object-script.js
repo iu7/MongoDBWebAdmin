@@ -23,7 +23,7 @@ $(document).ready(function() {
                     var editable = $(this);
                     var content = editable.text().trim();
                     if (isValid(content)) {
-                        $.get('/render-object', {json: content}, function(object) {
+                        $.post('/render-object', {json: content}, function(object) {
                             var object = $(object);
                             editable.replaceWith(object);
                         });
@@ -57,7 +57,7 @@ $(document).ready(function() {
             var insert_anchor = inserter.closest('.insert-anchor');
             var last = isEmptySet(insert_anchor.next('.insert-anchor'));
             var what = inserter.attr('what');
-            $.get('/render-empty-' + what, {last: last}, function(empty_pair) {
+            $.post('/render-empty-' + what, {last: last}, function(empty_pair) {
                 if (last) {
                     insert_anchor.children('.value').after('<span class="separator">,</span>')
                 }
@@ -92,3 +92,5 @@ $(document).ready(function() {
         }
     }, '.rollable[status="rolledup"] > .toggler');
 });
+
+

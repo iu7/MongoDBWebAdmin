@@ -1,39 +1,35 @@
+body
+{
+    margin-left: 20%; margin-right: 20%;
+}
+
+.document
+{
+    margin: 2px;
+}
+
+.object
+{
+    font-family: 'Arial';
+    font-size: medium;
+}
+
+.nice-border
+{
+    margin: 2px;
+    border-style: dotted; border-width: 1px;
+    padding: 2px;
+}
+
+.nice-line
+{
+    margin: 2px;
+    border-top-style: dotted; border-top-width: 1px;
+    height: 1px;
+}
+
 .error-message
 {
     background-color: rgba(255, 0, 0, 0.5);
     padding-left: 2px; padding-right: 2px;
-}
-
-.generic
-{
-    margin: 2px;
-    font-family: 'Arial';
-    font-size: medium;
-    border-style: inset;
-    border-width: 2px;
-    padding: 2px;
-    min-width: 140pt;
-}
-
-.loading-button:after
-{
-    content: '▶';
-    display: inline-block;
-    margin: 2px;
-}
-
-.loading-button[loading]:after
-{
-    content: '↻';
-    
-    -webkit-animation-name: loading;
-    -webkit-animation-duration: 1s;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-iteration-count: infinite;
-}
-
-@-webkit-keyframes loading
-{
-    from {-webkit-transform: rotate(0deg)}
-    to {-webkit-transform: rotate(360deg)}
 }

@@ -1,0 +1,27 @@
+<div class="load-anchor nice-border" style="position: relative">
+    <datalist id="database-names">
+        {% for database_name in database_names %}
+            <option value="{{- database_name -}}">{{- database_name -}}</option>
+        {% endfor%}        
+    </datalist>
+    <div style="display: inline-table">
+        <div style="display: table-row">
+            <div style="display: table-cell">
+                <div>Database:</div>
+                <input type="text" id="database-name" list="database-names">
+            </div>
+            <div style="display: table-cell">
+                <div>Username:</div>
+                <input type="text" id="login">
+            </div>
+            <div style="display: table-cell">
+                <div>Password:</div>
+                <input type="password" id="password">
+            </div>
+        </div>
+    </div>
+    <button id="open-database" style="position: absolute; bottom: 2px; right: 2px">Open database</button>
+</div>
+
+
+

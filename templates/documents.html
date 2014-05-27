@@ -1,11 +1,20 @@
 {% from 'object.html' import render_object %}
 
-<div></div>
+<div class="load-anchor nice-border">
 {% for document in documents %}
-    <div>
+    <div class="document" document_id="{{ document['_id'] }}">
+        <div style="float:right">
+            <span class="document-reloader"></span>
+            <span class="document-deleter"></span>
+            <span class="document-updater"></span>
+        </div>
         {{ render_object(document) }}
     </div>
-{% endfor %}        
+    {% if not loop.last %}
+        <div class="nice-line"></div>
+    {% endif %}
+{% endfor %}    
+</div>    
 
 
 
