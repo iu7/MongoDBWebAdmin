@@ -11,7 +11,13 @@
     <body>
         <h1>MongoDbWebAdmin</h1>
         <div id="content">
-            {% include 'server.html' %}
+            <div class="load-anchor nice-border" style="position: relative">
+                <div style="display: inline-block">
+                    <div>Server address:</div>
+                    <input type="text" id="server-address" value="localhost">
+                </div>
+                <button id="connect" style="position: absolute; bottom: 2px; right: 2px">Connect</button>
+            </div>
         </div>
     </body>
 </html>

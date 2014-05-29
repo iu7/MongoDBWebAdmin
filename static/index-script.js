@@ -2,7 +2,7 @@ $(document).ready(function() {
     $(document).on({
         click: function() {
             $('#connect').closest('.load-anchor').nextAll().remove();
-            $.post('/database-names', {
+            $.post('/server', {
                 server_address: $('#server-address').val()
             }).done(function(response) {
                 $('#connect').closest('.load-anchor').after(response);
@@ -13,7 +13,7 @@ $(document).ready(function() {
     $(document).on({
         click: function() {
             $('#open-database').closest('.load-anchor').nextAll().remove();
-            $.post('/collection-names', {
+            $.post('/database', {
                 server_address: $('#server-address').val(),
                 database_name: $('#database-name').val(),
                 login: $('#login').val(),
@@ -27,7 +27,7 @@ $(document).ready(function() {
     $(document).on({
         click: function() {
             $('#open-collection').closest('.load-anchor').nextAll().remove();
-            $.post('/documents', {
+            $.post('/collection', {
                 server_address: $('#server-address').val(),
                 database_name: $('#database-name').val(),
                 login: $('#login').val(),

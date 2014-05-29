@@ -154,9 +154,9 @@ def delete_document(mongo_client, database, collection):
     collection.remove({u'_id': document_id})
     return ''
 
-@flask_server.route('/documents', methods=['POST'])
+@flask_server.route('/collection', methods=['POST'])
 @needs_collection
-def documents(mongo_client, database, collection):
+def collection(mongo_client, database, collection):
     try:
         selector = json.loads(flask.request.form['selector'])
     except ValueError:
@@ -171,19 +171,19 @@ def documents(mongo_client, database, collection):
     if projector == {}:
         projector = None
     documents = [fix_document_id(document) for document in collection.find(selector, projector)]    
-    return flask.render_template('documents.html', documents=documents, exclude_id=exclude_id)
+    return flask.render_template('collection.html', documents=documents, exclude_id=exclude_id)
 
-@flask_server.route('/collection-names', methods=['POST'])
+@flask_server.route('/database', methods=['POST'])
 @needs_database
-def collection_names(mongo_client, database):
+def database(mongo_client, database):
     collection_names = database.collection_names(include_system_collections=False)
-    return flask.render_template('collection.html', collection_names=collection_names)
+    return flask.render_template('database.html', collection_names=collection_names)
 
-@flask_server.route('/database-names', methods=['POST'])
+@flask_server.route('/server', methods=['POST'])
 @needs_mongo_client
-def database_names(mongo_client):
+def server(mongo_client):
     database_names = mongo_client.database_names()
-    return flask.render_template('database.html', database_names=database_names)
+    return flask.render_template('server.html', database_names=database_names)
 
 @flask_server.route('/')
 def index():
