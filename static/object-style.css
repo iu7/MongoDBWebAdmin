@@ -55,10 +55,23 @@
 }
 
 
-.control:not(:hover)
+.control
 {
-    opacity: 0.2;
+    opacity: 0.0;
 }
+
+:hover > .control,
+.document:hover > .document-controls > .control:not(:hover)
+{
+    opacity: 0.3;
+}
+
+.control:hover
+{
+    opacity: 1.0;
+}
+
+
 
 .deleter
 {
