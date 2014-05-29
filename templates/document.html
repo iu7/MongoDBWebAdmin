@@ -1,7 +1,6 @@
 {% from 'object.html' import render_object %}
 
 {% macro render_document(document) %}
-    <div class="nice-line"></div>
     <div class="document" document_id="{{ document['_id'] }}">
         <div class="document-controls" style="float:right">
             <span class="control document-updater"></span>
@@ -10,6 +9,7 @@
         </div>
         {{ render_object(remove_id_if(document, exclude_id)) }}
     </div>
+    <div class="nice-line"></div>
 {% endmacro %}    
 
 {{ render_document(document) }}

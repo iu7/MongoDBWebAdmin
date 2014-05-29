@@ -1,4 +1,3 @@
-{% from 'object.html' import render_object %}
 <div class="load-anchor nice-border" style="position: relative">
     <datalist id="collection-names">
         {% for collection_name in collection_names %}
@@ -12,16 +11,13 @@
                 <input type="text" id="collection-name" list="collection-names">
             </div>
             <div style="display: table-cell">
-                <div>Selector:</div>
-                <div class="nice-border" id="selector" >{{ render_object({}) }}</div>
-            </div>
-            <div style="display: table-cell">
-                <div>Projector:</div>
-                <div class="nice-border" id="projector">{{ render_object({'_id':false}) }}</div>
+                <div id="collection-stats"></div>
             </div>
         </div>
     </div>
-    <button id="open-collection" style="position: absolute; bottom: 2px; right: 2px">Open collection</button>
+    <div style="position: absolute; bottom: 2px; right: 2px">
+        <button id="open-collection">Open collection</button>
+    </div>
 </div>
 
 

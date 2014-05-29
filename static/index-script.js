@@ -2,7 +2,7 @@ $(document).ready(function() {
     $(document).on({
         click: function() {
             $('#connect').closest('.load-anchor').nextAll().remove();
-            $.post('/database-names', {
+            $.post('/connect', {
                 server_address: $('#server-address').val()
             }).done(function(response) {
                 $('#connect').closest('.load-anchor').after(response);
@@ -12,22 +12,43 @@ $(document).ready(function() {
     
     $(document).on({
         click: function() {
+            $('#database-stats').contents().remove();
             $('#open-database').closest('.load-anchor').nextAll().remove();
-            $.post('/collection-names', {
+            $.post('/open-database', {
                 server_address: $('#server-address').val(),
                 database_name: $('#database-name').val(),
                 login: $('#login').val(),
                 password: $('#password').val()
             }).done(function(response) {
-                $('#open-database').closest('.load-anchor').after(response);
+                response = $(response);
+                $('#database-stats').append(response.filter('#database-stats').contents());
+                $('#open-database').closest('.load-anchor').after(response.filter(':not(#database-stats)'));
             });
         }
     }, '#open-database');
     
     $(document).on({
         click: function() {
+            $('#collection-stats').contents().remove();
             $('#open-collection').closest('.load-anchor').nextAll().remove();
-            $.post('/documents', {
+            $.post('/open-collection', {
+                server_address: $('#server-address').val(),
+                database_name: $('#database-name').val(),
+                login: $('#login').val(),
+                password: $('#password').val(),
+                collection_name: $('#collection-name').val()
+            }).done(function(response) {
+                response = $(response);
+                $('#collection-stats').append(response.filter('#collection-stats').contents());
+                $('#open-collection').closest('.load-anchor').after(response.filter(':not(#collection-stats)'));
+            });
+        }
+    }, '#open-collection');
+    
+    $(document).on({
+        click: function() {
+            $('#find-documents').closest('.load-anchor').nextAll().remove();
+            $.post('/find-documents', {
                 server_address: $('#server-address').val(),
                 database_name: $('#database-name').val(),
                 login: $('#login').val(),
@@ -36,14 +57,14 @@ $(document).ready(function() {
                 selector: $('#selector').text(),
                 projector: $('#projector').text()
             }).done(function(response) {
-                $('#open-collection').closest('.load-anchor').after(response);
+                $('#find-documents').closest('.load-anchor').after(response);
             });
         }
-    }, '#open-collection');
+    }, '#find-documents');
     
     $(document).on({
         click: function() {
-            $('#new-document').nextAll().remove();
+            $('#find-documents').closest('.load-anchor').nextAll().remove();
             $.post('/new-document', {
                 server_address: $('#server-address').val(),
                 database_name: $('#database-name').val(),
@@ -51,12 +72,7 @@ $(document).ready(function() {
                 password: $('#password').val(),
                 collection_name: $('#collection-name').val(),
             }).done(function(response) {
-                response = $(response)
-                if (response.hasClass('.error-message')) {
-                    $('#new-document').after(response);
-                } else {
-                    $('#new-document-anchor').after(response)
-                }
+                $('#find-documents').closest('.load-anchor').after(response);
             });
         }
     }, '#new-document');

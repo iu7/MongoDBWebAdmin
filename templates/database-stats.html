@@ -1,0 +1,13 @@
+<div id="database-stats">
+    <div class="nice-border rollable" status="rolledup">
+        <span class="presistent">Statistics:</span>
+        <span class="toggler"></span>
+        <div>Collections: {{ database_stats.collections }}</div>
+        <div>Documents: {{ database_stats.objects }}</div>
+        <div>Average document size: {{ database_stats.avgObjSize }} bytes</div>
+        <div>Storage size: {{ database_stats.storageSize }} bytes</div>
+        <div>Indexes: {{ database_stats.indexes }}</div>
+        <div>Total index size: {{ database_stats.indexSize }}</div>
+        <div>Database file size: {{ database_stats.fileSize }}</div>
+    </div>
+</div>
