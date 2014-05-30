@@ -1,0 +1,9 @@
+{% from 'object.html' import render_object %}
+<div class="load-anchor nice-border" style="position: relative">
+    Command: <span id="command">{{ render_object({'listCommands':1}) }}</span>
+    <div style="position: absolute; bottom: 2px; right: 2px">
+        <button id="execute">Execute</button>
+    </div>
+</div>
+
+

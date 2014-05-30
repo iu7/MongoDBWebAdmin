@@ -9,7 +9,37 @@ $(document).ready(function() {
             });
         }
     }, '#connect');
+
+    $(document).on({
+        click: function() {
+            $('#database-stats').contents().remove();
+            $('#execute-command').closest('.load-anchor').nextAll().remove();
+            $.post('/execute-command', {
+                server_address: $('#server-address').val(),
+                database_name: $('#database-name').val(),
+                login: $('#login').val(),
+                password: $('#password').val()
+            }).done(function(response) {
+                $('#execute-command').closest('.load-anchor').after(response);
+            });
+        }
+    }, '#execute-command');
     
+    $(document).on({
+        click: function() {
+            $('#execute').closest('.load-anchor').nextAll().remove();
+            $.post('/execute', {
+                server_address: $('#server-address').val(),
+                database_name: $('#database-name').val(),
+                login: $('#login').val(),
+                password: $('#password').val(),
+                command: $('#command').text()
+            }).done(function(response) {
+                $('#execute').closest('.load-anchor').after(response);
+            });
+        }
+    }, '#execute');
+
     $(document).on({
         click: function() {
             $('#database-stats').contents().remove();

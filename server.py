@@ -190,5 +190,21 @@ def index():
     return flask.render_template('index.html')
 
 
+@flask_server.route('/execute-command', methods=['POST'])
+@needs_database
+def execute_command(mongo_client, database):
+    return flask.render_template('execute-command.html')
+
+@flask_server.route('/execute', methods=['POST'])
+@needs_database
+def execute(mongo_client, database):
+    command = json.loads(flask.request.form['command'])
+    try:
+        result = database.command(command)
+        return flask.render_template('object.html', object=result)
+    except pymongo.errors.PyMongoError:
+        return flask.render_template('error.html', message='Invalid command.')
+
+
 if __name__ == '__main__':
     flask_server.run(debug=True)
