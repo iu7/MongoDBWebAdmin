@@ -70,7 +70,7 @@ $(document).ready(function() {
                 database_name: $('#database-name').val(),
                 login: $('#login').val(),
                 password: $('#password').val(),
-                collection_name: $('#collection-name').val(),
+                collection_name: $('#collection-name').val()
             }).done(function(response) {
                 $('#find-documents').closest('.load-anchor').after(response);
             });
